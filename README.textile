@@ -1,0 +1,3 @@
+Ruby gem for doing payment authorizations using the Plug N Pay payment processor.
+
+Uses HTTParty.
