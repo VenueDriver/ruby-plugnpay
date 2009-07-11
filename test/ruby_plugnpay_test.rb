@@ -4,14 +4,13 @@ require 'ruby_plugnpay'
 class Ruby_PlugNPayTest < ActiveSupport::TestCase
 
   # Set your PlugNPay account name or the tests will not work.
-  publisher_name = 'youraccount'
+  publisher_name = 'venuedrive'
 
   test "authorization" do
     assert PlugNPay::Service.new( 'publisher-name' => publisher_name ).
       authorize(
         'card-number' => '4111111111111111',
         'card-name' => 'cardtest',
-        'card-type' => 'Visa',
         'card-amount' => '1',
         'card-exp' => '01/10')
   end
@@ -24,7 +23,6 @@ class Ruby_PlugNPayTest < ActiveSupport::TestCase
         authorize(
           'card-number' => '4111111111111111',
           'card-name' => 'cardtest',
-          'card-type' => 'Visa',
           'card-amount' => '1500', # This amount causes a 'badcard' error.
           'card-exp' => '01/10')
     rescue PlugNPay::BadCard
@@ -42,7 +40,6 @@ class Ruby_PlugNPayTest < ActiveSupport::TestCase
         authorize(
           'card-number' => '4111111111111111',
           'card-name' => 'cardtest',
-          'card-type' => 'Visa',
           'card-amount' => '2500', # This amount causes a 'problem' error.
           'card-exp' => '01/10')
     rescue PlugNPay::Problem

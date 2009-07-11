@@ -13,7 +13,6 @@ h1. Usage
     authorize(
       'card-number' => '4111111111111111',
       'card-name' => 'cardtest',
-      'card-type' => 'Visa',
       'card-amount' => '1',
       'card-exp' => '01/10')
   puts "Your order ID is: " + response['orderID']
