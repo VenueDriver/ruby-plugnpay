@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>authorize (PlugNPay::Service)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/ruby_plugnpay.rb, line 31</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">authorize</span>(<span class="ruby-identifier">params</span>)
+
+      <span class="ruby-identifier">query</span> = {
+        <span class="ruby-value str">'publisher-name'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">publisher_name</span>,
+        <span class="ruby-value str">'mode'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'auth'</span>
+      }
+
+      <span class="ruby-comment cmt"># Set up HTTP request query parameters from method parameters.</span>
+      <span class="ruby-identifier">possible_params</span> = <span class="ruby-node">%w(card-number card-name card-type card-amount card-exp card-cvv
+        email ship-name address1 address2 city state zip country)</span>
+      <span class="ruby-identifier">possible_params</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">query</span>[<span class="ruby-identifier">param</span>] = <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">unescape</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">param</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">param</span>]
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-comment cmt"># Perform HTTP request.</span>
+      <span class="ruby-identifier">response_string</span> = <span class="ruby-constant">Service</span>.<span class="ruby-identifier">post</span>(<span class="ruby-identifier">api_url</span>, <span class="ruby-identifier">:query</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">query</span>)
+      <span class="ruby-identifier">puts</span> <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">unescape</span>(<span class="ruby-identifier">response_string</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\&amp;/</span>,<span class="ruby-value str">&quot;\n&quot;</span>)) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">debug</span>
+      
+      <span class="ruby-comment cmt"># Parse HTTP response into a Ruby hash.</span>
+      <span class="ruby-identifier">response</span> = <span class="ruby-identifier">response_string</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">/\&amp;/</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">variable</span><span class="ruby-operator">|</span> }
+      
+      <span class="ruby-comment cmt"># Return the confirmation number.</span>
+      
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
