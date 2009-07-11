@@ -1,3 +1,20 @@
-Ruby gem for doing payment authorizations using the Plug N Pay payment processor.
+h1. ruby-plugnpay
 
-Uses HTTParty.
+Ruby gem for doing payment authorizations using the Plug N Pay payment processor.  Uses HTTParty for HTTP requests.
+
+h1. Installation
+
+<pre><code>script/plugin install git://github.com/angelmg/ruby-plugnpay.git</code></pre>
+
+h1. Usage
+
+<pre><code>
+  response = PlugNPay::Service.new( 'publisher-name' => publisher_name ).
+    authorize(
+      'card-number' => '4111111111111111',
+      'card-name' => 'cardtest',
+      'card-type' => 'Visa',
+      'card-amount' => '1',
+      'card-exp' => '01/10')
+  puts "Your order ID is: " + response['orderID']
+</code></pre>
