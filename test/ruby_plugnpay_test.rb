@@ -25,8 +25,9 @@ class Ruby_PlugNPayTest < ActiveSupport::TestCase
           'card-name' => 'cardtest',
           'card-amount' => '1500', # This amount causes a 'badcard' error.
           'card-exp' => '01/10')
-    rescue PlugNPay::BadCard
+    rescue PlugNPay::BadCard => detail
       badcard = true
+      # puts "ERROR MESSAGE: #{detail.message}"
     end
     assert response.nil?
     assert badcard
@@ -42,8 +43,9 @@ class Ruby_PlugNPayTest < ActiveSupport::TestCase
           'card-name' => 'cardtest',
           'card-amount' => '2500', # This amount causes a 'problem' error.
           'card-exp' => '01/10')
-    rescue PlugNPay::Problem
+    rescue PlugNPay::Problem => detail
       problem = true
+      # puts "ERROR MESSAGE: #{detail.message}"
     end
     assert response.nil?
     assert problem

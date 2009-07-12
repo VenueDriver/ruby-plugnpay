@@ -54,9 +54,11 @@ module PlugNPay
       # Raise errors if necessary.
       case response['FinalStatus']
         when /badcard/i
-          raise BadCard
+          raise BadCard, CGI.unescape(response['MErrMsg'])
         when /problem/i
-          raise Problem
+          raise Problem, CGI.unescape(response['MErrMsg'])
+        when /problem/i
+          raise Fraud, CGI.unescape(response['MErrMsg'])
         else
           # Return the response.
           response
