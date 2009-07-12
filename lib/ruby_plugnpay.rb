@@ -57,7 +57,7 @@ module PlugNPay
           raise BadCard, CGI.unescape(response['MErrMsg'])
         when /problem/i
           raise Problem, CGI.unescape(response['MErrMsg'])
-        when /problem/i
+        when /fraud/i
           raise Fraud, CGI.unescape(response['MErrMsg'])
         else
           # Return the response.
