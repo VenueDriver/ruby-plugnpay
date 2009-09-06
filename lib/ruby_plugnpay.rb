@@ -17,6 +17,7 @@ module PlugNPay
     #   PlugNPay::Service.new('publisher-name'=>'youraccount').
     def initialize(params={})
       self.api_url = 'https://pay1.plugnpay.com/payment/pnpremote.cgi'
+      # self.api_url = 'https://pay1.plugnpay.com/payment/inputtestapi.cgi'
       self.publisher_name = params['publisher-name'] if params['publisher-name']
       self.debug = params['debug'] if params['debug']
     end
@@ -42,15 +43,22 @@ module PlugNPay
         query[param] = CGI.unescape(params[param]) if params[param]
       end
 
+      # Show the query in the log if debug mode.
+      RAILS_DEFAULT_LOGGER.warn("Plug N Pay URL: #{api_url}") if debug
+      RAILS_DEFAULT_LOGGER.warn("Plug N Pay query data: #{query.inspect}") if debug
+
       # Perform HTTP request.
-      response_string = Service.post(api_url, :query => query)
-      puts CGI.unescape(response_string.gsub(/\&/,"\n")) if debug
-      
+      response_string = Service.post(api_url, :body => query)
+      RAILS_DEFAULT_LOGGER.warn("Plug N Pay response: " +
+        (response_string.nil? ? 'nil' : CGI.unescape(response_string.gsub(/\&/,"\n")))) if debug
+
+      raise Problem, "No response" if response_string.nil?
+
       # Parse HTTP response into a Ruby hash.
       response_values = response_string.split(/\&/)
       response = Hash[*response_values.collect {|value|
         [value.match(/^(.*)\=/)[1], value.match(/\=(.*)$/)[1]] }.flatten]
-      
+
       # Raise errors if necessary.
       case response['FinalStatus']
         when /badcard/i
